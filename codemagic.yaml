@@ -5,9 +5,6 @@ workflows:
     environment:
       flutter: stable
       xcode: latest
-      ios_signing:
-        distribution_type: app_store
-        bundle_identifier: "my.app.FantasticFoodFest"
     scripts:
       - name: Install dependencies
         script: |
@@ -23,4 +20,5 @@ workflows:
         api_key: $APP_STORE_CONNECT_API_KEY
         issuer_id: $APP_STORE_CONNECT_ISSUER_ID
         key_id: $APP_STORE_CONNECT_KEY_ID
-        submit_to_testflight: true   
+        submit_to_testflight: true
+        submit_to_app_store: true     
