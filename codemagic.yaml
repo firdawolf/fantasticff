@@ -4,13 +4,17 @@ workflows:
     max_build_duration: 20
     environment:
       flutter: stable
+      xcode: latest
       ios_signing:
         distribution_type: app_store
+        bundle_identifier: "my.app.fantasticff"
     scripts:
-      - name: Build iOS IPA
+      - name: Install dependencies
         script: |
           flutter clean
           flutter pub get
+      - name: Build iOS IPA
+        script: |
           flutter build ipa --release
     artifacts:
       - build/ios/ipa/*.ipa
@@ -19,3 +23,4 @@ workflows:
         api_key: $APP_STORE_CONNECT_API_KEY
         issuer_id: $APP_STORE_CONNECT_ISSUER_ID
         key_id: $APP_STORE_CONNECT_KEY_ID
+        submit_to_testflight: true   
