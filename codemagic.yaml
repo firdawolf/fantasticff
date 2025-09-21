@@ -7,7 +7,7 @@ workflows:
       xcode: latest
       ios_signing:
         distribution_type: app_store
-        bundle_identifier: "my.app.fantasticff"
+        bundle_identifier: "my.app.FantasticFoodFest"
     scripts:
       - name: Install dependencies
         script: |
