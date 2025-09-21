@@ -133,6 +133,7 @@ class _MyAppState extends State<MyApp> {
               if (resource == PermissionResourceType.CAMERA) {
                 permissionsToRequest.add(Permission.camera);
               }
+              //add space
             }
 
             Map<Permission, PermissionStatus> statuses =

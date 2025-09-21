@@ -1,5 +1,5 @@
 name: fantasticff
-description: "A new Flutter project."
+description: "An App For Fantastic Food Fest by Kak Nab"
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -16,7 +16,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.0.0+1
+version: 1.0.1+3
 
 environment:
   sdk: ^3.8.1
@@ -47,10 +47,17 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
+  flutter_launcher_icons: "^0.13.1"
+  launcher_name: ^1.0.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
+launcher_name:
+  default: "Fantastic Food Fest"
+flutter_launcher_icons:
+  android: true   # Use this icon for Android
+  ios: true       # Use this icon for iOS
+  image_path: "assets/icon/icon.png" # Path to your master icon
 # The following section is specific to Flutter packages.
 flutter:
 

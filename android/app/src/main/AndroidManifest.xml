@@ -13,7 +13,7 @@
 <!-- Internet permission (probably already included) -->
 <uses-permission android:name="android.permission.INTERNET" />
     <application
-        android:label="fantasticff"
+        android:label="@string/appName"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
