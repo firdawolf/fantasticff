@@ -20,51 +20,21 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    // This schedules a callback to be executed after the first frame is rendered.
+    // Removed the camera permission request from here
+    // Only request location permission upfront if needed for your app
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _checkAndRequestPermissions();
+      _checkLocationPermission();
     });
   }
 
-  /// Checks the status of required permissions and requests them if needed.
-  /// If permanently denied, it shows a dialog to open settings.
-  Future<void> _checkAndRequestPermissions() async {
-    // A map of permissions we need to check.
-    Map<Permission, PermissionStatus> statuses = await [
-      Permission.camera,
-      Permission
-          .locationWhenInUse, // More common and user-friendly than .location
-    ].request();
-
-    // bool isPermanentlyDenied = statuses.values.any(
-    //   (status) => status.isPermanentlyDenied,
-    // );
-
-    // if (isPermanentlyDenied) {
-    //   if (mounted) showAlertDialog(context);
-    // }
-    // if (mounted) showAlertDialog(context);
+  /// Only check location permission if you need it immediately
+  /// Remove this if you want location to also be on-demand
+  Future<void> _checkLocationPermission() async {
+    final status = await Permission.locationWhenInUse.status;
+    if (status.isPermanentlyDenied) {
+      if (mounted) _showSettingsDialog(Permission.locationWhenInUse);
+    }
   }
-
-  showAlertDialog(context) => showCupertinoDialog<void>(
-    context: context,
-    builder: (context) => CupertinoAlertDialog(
-      title: const Text('Permission Denied'),
-      content: const Text('Allow access to Camera and Location'),
-      actions: <CupertinoDialogAction>[
-        CupertinoDialogAction(
-          child: const Text('Cancel'),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        CupertinoDialogAction(
-          isDefaultAction: true,
-
-          onPressed: () => openAppSettings(),
-          child: const Text('Open Settings'),
-        ),
-      ],
-    ),
-  );
 
   /// Shows a dialog explaining why the permission is needed and provides a
   /// button to open the app settings.
@@ -81,30 +51,31 @@ class _MyAppState extends State<MyApp> {
         permission == Permission.location) {
       permissionName = 'Location';
       content =
-          'Location permission is necessary to provide accurate navigation and location-based services. Please enable it in app settings.';
+          'Location permission is necessary to provide accurate navigation to user so it can be view on the map screen';
     }
 
     // Ensure the context is available and mounted before showing a dialog.
     if (mounted) {
-      showDialog(
+      showCupertinoDialog<void>(
         context: context,
         builder: (BuildContext context) {
-          return AlertDialog(
+          return CupertinoAlertDialog(
             title: Text('$permissionName Permission Required'),
             content: Text(content),
-            actions: <Widget>[
-              TextButton(
+            actions: <CupertinoDialogAction>[
+              CupertinoDialogAction(
                 child: const Text('Cancel'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
-              TextButton(
+              CupertinoDialogAction(
+                isDefaultAction: true,
                 child: const Text('Open Settings'),
                 onPressed: () {
+                  Navigator.of(context).pop();
                   // This function from permission_handler opens the app's settings screen.
                   openAppSettings();
-                  Navigator.of(context).pop();
                 },
               ),
             ],
@@ -129,16 +100,44 @@ class _MyAppState extends State<MyApp> {
           // This handler is for permission requests initiated by the web page.
           onPermissionRequest: (controller, request) async {
             List<Permission> permissionsToRequest = [];
+
             for (final resource in request.resources) {
               if (resource == PermissionResourceType.CAMERA) {
                 permissionsToRequest.add(Permission.camera);
+              } else if (resource == PermissionResourceType.MICROPHONE) {
+                permissionsToRequest.add(Permission.microphone);
               }
-              //add space
+              // Add other permissions as needed
             }
 
+            if (permissionsToRequest.isEmpty) {
+              // If no permissions we handle, allow by default
+              return PermissionResponse(
+                resources: request.resources,
+                action: PermissionResponseAction.GRANT,
+              );
+            }
+
+            // Request the permissions
             Map<Permission, PermissionStatus> statuses =
                 await permissionsToRequest.request();
 
+            // Check if any permission was permanently denied
+            bool hasPermanentlyDenied = statuses.entries.any(
+              (entry) => entry.value.isPermanentlyDenied,
+            );
+
+            // Show settings dialog for permanently denied permissions
+            if (hasPermanentlyDenied) {
+              for (final entry in statuses.entries) {
+                if (entry.value.isPermanentlyDenied) {
+                  _showSettingsDialog(entry.key);
+                  break; // Show dialog for first permanently denied permission
+                }
+              }
+            }
+
+            // Check if all requested permissions are granted
             bool allGranted = statuses.values.every(
               (status) => status.isGranted,
             );
@@ -150,10 +149,12 @@ class _MyAppState extends State<MyApp> {
                   : PermissionResponseAction.DENY,
             );
           },
+
           // This handler is for geolocation requests initiated by the web page.
           onGeolocationPermissionsShowPrompt:
               (InAppWebViewController controller, String origin) async {
                 final status = await Permission.locationWhenInUse.request();
+
                 if (status.isGranted) {
                   return GeolocationPermissionShowPromptResponse(
                     origin: origin,
@@ -161,9 +162,11 @@ class _MyAppState extends State<MyApp> {
                     retain: true,
                   );
                 }
+
                 if (status.isPermanentlyDenied) {
                   _showSettingsDialog(Permission.locationWhenInUse);
                 }
+
                 return GeolocationPermissionShowPromptResponse(
                   origin: origin,
                   allow: false,

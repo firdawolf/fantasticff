@@ -9,14 +9,14 @@
 <string>This app needs microphone access for media features.</string>
 
 <key>NSLocationWhenInUseUsageDescription</key>
-<string>This app needs location access to provide location-based services.</string>
+<string>Location access is needed so you can get real-time location on the event map</string>
 
 <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-<string>This app needs location access to provide location-based services.</string>
+<string>Location access is needed so you can get real-time location on the event map</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>${PRODUCT_NAME}</string>
+	<string>Fantastic Food Fest</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>

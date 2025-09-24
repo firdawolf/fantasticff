@@ -14,7 +14,7 @@ migrate_working_dir/
 ./index.html
 ./index.zip
 ./pubspec.lock
-./upload-keystore.p12
+upload-keystore.p12
 
 # IntelliJ related
 *.iml
