@@ -53,7 +53,7 @@ dev_dependencies:
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 launcher_name:
-  default: "Fantastic Food Fest"
+  default: "FantasticFoodFest"
 flutter_launcher_icons:
   android: true   # Use this icon for Android
   ios: true       # Use this icon for iOS
