@@ -38,9 +38,17 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _checkCameraPermission() async {
-    final status = await Permission.camera.status;
-    if (status.isPermanentlyDenied) {
-      if (mounted) _showSettingsDialog(Permission.camera);
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.camera,
+      Permission.microphone,
+    ].request();
+
+    final cameraStatus = statuses[Permission.camera];
+
+    if (cameraStatus != null && cameraStatus.isPermanentlyDenied) {
+      if (mounted) {
+        _showSettingsDialog(Permission.camera);
+      }
     }
   }
 
@@ -110,11 +118,11 @@ class _MyAppState extends State<MyApp> {
             List<Permission> permissionsToRequest = [];
 
             for (final resource in request.resources) {
-              if (resource == PermissionResourceType.CAMERA) {
-                permissionsToRequest.add(Permission.camera);
-              } else if (resource == PermissionResourceType.MICROPHONE) {
-                permissionsToRequest.add(Permission.microphone);
-              }
+              // if (resource == PermissionResourceType.CAMERA) {
+              //   permissionsToRequest.add(Permission.camera);
+              // } else if (resource == PermissionResourceType.MICROPHONE) {
+              //   permissionsToRequest.add(Permission.microphone);
+              // }
               // Add other permissions as needed
             }
 
