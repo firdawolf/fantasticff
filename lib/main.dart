@@ -24,6 +24,7 @@ class _MyAppState extends State<MyApp> {
     // Only request location permission upfront if needed for your app
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _checkLocationPermission();
+      _checkCameraPermission();
     });
   }
 
@@ -33,6 +34,13 @@ class _MyAppState extends State<MyApp> {
     final status = await Permission.locationWhenInUse.status;
     if (status.isPermanentlyDenied) {
       if (mounted) _showSettingsDialog(Permission.locationWhenInUse);
+    }
+  }
+
+  Future<void> _checkCameraPermission() async {
+    final status = await Permission.camera.status;
+    if (status.isPermanentlyDenied) {
+      if (mounted) _showSettingsDialog(Permission.camera);
     }
   }
 

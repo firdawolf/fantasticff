@@ -2,12 +2,11 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-<key>NSCameraUsageDescription</key>
-<string>This app needs camera access to scan QR codes.</string>
 
 <key>NSMicrophoneUsageDescription</key>
 <string>This app needs microphone access for media features.</string>
-
+<key>NSCameraUsageDescription</key>
+<string>This app needs camera access to scan QR codes.</string>
 <key>NSLocationWhenInUseUsageDescription</key>
 <string>Location access is needed so you can get real-time location on the event map</string>
 
