@@ -23,7 +23,6 @@ class _MyAppState extends State<MyApp> {
     // Removed the camera permission request from here
     // Only request location permission upfront if needed for your app
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _checkLocationPermission();
       _checkCameraPermission();
     });
   }
